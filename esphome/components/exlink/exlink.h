@@ -17,12 +17,15 @@ class exlink : public uart::UARTDevice, public Component {
   void volume_up();
 
  protected:
-  void send_cmd_(uint8_t cmd, uint16_t argument = 0);
-  void send_cmd_(uint8_t cmd, uint16_t high, uint16_t low) {
-    this->send_cmd_(cmd, ((high & 0xFF) << 8) | (low & 0xFF));
-  }
-  uint8_t sent_cmd_{0};
-};
+  void send_cmd_(uint8_t[4]);
+};  // class exlink
+
+#define EXLINK_SIMPLE_ACTION(ACTION_CLASS, ACTION_METHOD) \
+  template<typename... Ts> class ACTION_CLASS : public Action<Ts...>, public Parented<exlink> { \
+    void play(Ts... x) override { this->parent_->ACTION_METHOD(); } \
+  };
+
+EXLINK_SIMPLE_ACTION(VolumeUpAction, volume_up)
 
 }  // namespace exlink
 }  // namespace esphome
