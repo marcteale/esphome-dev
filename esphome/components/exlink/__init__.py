@@ -20,7 +20,7 @@ CONFIG_SCHEMA = cv.All(
     ).extend(uart.UART_DEVICE_SCHEMA)
 )
 FINAL_VALIDATE_SCHEMA = uart.final_validate_device_schema(
-    "exlink", baud_rate=9600, require_tx=True
+    "exlink", baud_rate=9600, require_rx=True, require_tx=True
 )
 
 
@@ -39,7 +39,7 @@ async def to_code(config):
         }
     ),
 )
-async def dfplayer_volume_up_to_code(config, action_id, template_arg, args):
+async def exlink_volume_up_to_code(config, action_id, template_arg, args):
     var = cg.new_Pvariable(action_id, template_arg)
     await cg.register_parented(var, config[CONF_ID])
     return var

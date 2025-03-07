@@ -24,11 +24,12 @@ void exlink::send_cmd_(uint8_t cmd[4]) {
     send_data[i + 2] = cmd[i];
 
   uint8_t checksum = 0x00;
-  for (uint8_t i = 1; i < 6; i++)
-    checksum += cmd[i];
+  for (uint8_t i = 0; i < 6; i++)
+    checksum += send_data[i];
   ESP_LOGV(TAG, "Byte total: 0x%02x", checksum);
   checksum = ~checksum + 1;
   ESP_LOGV(TAG, "Checksum total: 0x%02x", checksum);
+  send_data[6] = checksum;
 
   this->write_array(send_data, 7);
   ESP_LOGV(TAG, "Command sent: %s", format_hex_pretty(send_data, 7).c_str());
