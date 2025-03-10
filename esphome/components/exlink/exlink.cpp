@@ -7,7 +7,6 @@ namespace exlink {
 static const char *const TAG = "exlink";
 
 void exlink::volume_up() {
-  ESP_LOGD(TAG, "Increasing volume");
   uint8_t cmd[4] = {0x01, 0x00, 0x01, 0x00};
   this->send_cmd_(cmd);
 }
